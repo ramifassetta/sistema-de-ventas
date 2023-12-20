@@ -1,18 +1,104 @@
 import { SumaProductos } from "./SumaProductos";
 
 export const ProductosHome = () => {
-
   return (
-
     <div className="flex flex-row">
       <div className="space-y-10 ml-20 w-2/4 ">
-        <div className="border border-gray-300 rounded-md p-5 font-raleway">Bebidas</div>
-        <div className="border border-gray-300 rounded-md p-5 font-raleway">Productos Empaquetados</div>
-        <div className="border border-gray-300 rounded-md p-5 font-raleway">Lacteos</div>
-        <div className="border border-gray-300 rounded-md p-5 font-raleway">Panadería</div>
-        <div className="border border-gray-300 rounded-md p-5 font-raleway">Embutidos</div>
-        <div className="border border-gray-300 rounded-md p-5 font-raleway">
+        <div className="border border-gray-300 rounded-md p-5 font-raleway justify-between flex items-center">
+          Bebidas{" "}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            className="bi bi-chevron-compact-down"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M1.553 6.776a.5.5 0 0 1 .67-.223L8 9.44l5.776-2.888a.5.5 0 1 1 .448.894l-6 3a.5.5 0 0 1-.448 0l-6-3a.5.5 0 0 1-.223-.67z"
+            />
+          </svg>
+        </div>
+        <div className="border border-gray-300 rounded-md p-5 font-raleway justify-between flex items-center">
+          Productos Empaquetados
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            className="bi bi-chevron-compact-down"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M1.553 6.776a.5.5 0 0 1 .67-.223L8 9.44l5.776-2.888a.5.5 0 1 1 .448.894l-6 3a.5.5 0 0 1-.448 0l-6-3a.5.5 0 0 1-.223-.67z"
+            />
+          </svg>
+        </div>
+        <div className="border border-gray-300 rounded-md p-5 font-raleway justify-between flex items-center">
+          Lacteos
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            className="bi bi-chevron-compact-down"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M1.553 6.776a.5.5 0 0 1 .67-.223L8 9.44l5.776-2.888a.5.5 0 1 1 .448.894l-6 3a.5.5 0 0 1-.448 0l-6-3a.5.5 0 0 1-.223-.67z"
+            />
+          </svg>
+        </div>
+        <div className="border border-gray-300 rounded-md p-5 font-raleway justify-between flex items-center">
+          Panadería
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            className="bi bi-chevron-compact-down"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M1.553 6.776a.5.5 0 0 1 .67-.223L8 9.44l5.776-2.888a.5.5 0 1 1 .448.894l-6 3a.5.5 0 0 1-.448 0l-6-3a.5.5 0 0 1-.223-.67z"
+            />
+          </svg>
+        </div>
+        <div className="border border-gray-300 rounded-md p-5 font-raleway justify-between flex items-center">
+          Embutidos
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            className="bi bi-chevron-compact-down"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M1.553 6.776a.5.5 0 0 1 .67-.223L8 9.44l5.776-2.888a.5.5 0 1 1 .448.894l-6 3a.5.5 0 0 1-.448 0l-6-3a.5.5 0 0 1-.223-.67z"
+            />
+          </svg>
+        </div>
+        <div className="border border-gray-300 rounded-md p-5 font-raleway justify-between flex items-center">
           Cuidado Personal y otros
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="currentColor"
+            className="bi bi-chevron-compact-down"
+            viewBox="0 0 16 16"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M1.553 6.776a.5.5 0 0 1 .67-.223L8 9.44l5.776-2.888a.5.5 0 1 1 .448.894l-6 3a.5.5 0 0 1-.448 0l-6-3a.5.5 0 0 1-.223-.67z"
+            />
+          </svg>
         </div>
       </div>
       <SumaProductos />
