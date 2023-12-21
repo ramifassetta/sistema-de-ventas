@@ -24,7 +24,7 @@ export const SumaProductos = () => {
 
       <div className="justify-between flex flex-row">
         <p className="ml-16 mt-10 font-raleway font-semibold text-green-500 text-2xl ">Total: </p>
-        <p className="ml-16 mt-7 mr-16 font-raleway font-semibold text-white text-2xl border  p-3 rounded-md bg-green-500">$900</p>
+        <p className="ml-16 mt-7 mr-16 font-raleway font-semibold text-white text-2xl border p-3 rounded-md bg-green-500">$900</p>
       </div>
     </div>
   )
