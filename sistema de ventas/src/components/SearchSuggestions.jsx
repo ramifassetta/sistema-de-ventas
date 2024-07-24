@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+
 
 export const SearchSuggestions = ({ suggestions, closeSuggestions }) => {
 
@@ -7,12 +7,9 @@ export const SearchSuggestions = ({ suggestions, closeSuggestions }) => {
   };
 
   return (
-    // <Link to="/profile" onClick={handleClick}>
-    // <Link to={`/profile/${suggestions.id_users}`} onClick={handleClick}>
-      <div className="p-10px 20px hover:bg-efefef cursor-pointer">
-        {/* {suggestions.userName} */}
+      <div className="p-10px 20px hover:bg-efefef cursor-pointer" onClick={handleClick}>
+        {suggestions.nombre}
       </div>
-    // </Link>
   );
 };
 
