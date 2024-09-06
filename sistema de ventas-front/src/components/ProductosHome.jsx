@@ -2,8 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import { SumaProductos } from "./SumaProductos";
 import { Searchbar } from "./Searchbar";
 import { SearchSuggestionsList } from "./SearchSuggestionsList";
-import categorias from "../data/categorias";
-import productos from "../constants/productos";
+// import categorias from "../data/categorias";
+// import productos from "../constants/productos";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchCategorias } from "../redux/slices/categoriaThunks";
+import { fetchProductos } from "../redux/slices/productoThunks";
 
 export const ProductosHome = () => {
   const [searchSuggestions, setSearchSuggestions] = useState([]);
@@ -14,6 +17,15 @@ export const ProductosHome = () => {
   const searchRef = useRef(null);
   const suggestionsRef = useRef(null);
   const categoryRefs = useRef([]);
+  const dispatch = useDispatch();
+  const categorias = useSelector((state) => state.categories.categorias);
+  const loading = useSelector((state) => state.categories.loading);
+  const error = useSelector((state) => state.categories.error);
+  const productos = useSelector((state) => state.products);
+  const loadingProductos = useSelector((state) => state.products.loading);
+  const errorProductos = useSelector((state) => state.products.error);
+
+  console.log(categorias);
 
   const closeSuggestions = () => {
     setSearchSuggestions([]);
@@ -45,7 +57,8 @@ export const ProductosHome = () => {
       setSelectedCategory(category);
       setActiveCategoryIndex(index);
       const filteredSuggestions = productos.filter(
-        (producto) => producto.categoria.toLowerCase() === category.toLowerCase()
+        (producto) =>
+          producto.categoria.toLowerCase() === category.nombre.toLowerCase()
       );
       setCategorySuggestions(filteredSuggestions);
     }
@@ -57,7 +70,10 @@ export const ProductosHome = () => {
       if (searchRef.current && searchRef.current.contains(event.target)) {
         clickedOutside = false;
       }
-      if (suggestionsRef.current && suggestionsRef.current.contains(event.target)) {
+      if (
+        suggestionsRef.current &&
+        suggestionsRef.current.contains(event.target)
+      ) {
         clickedOutside = false;
       }
       categoryRefs.current.forEach((ref, index) => {
@@ -72,12 +88,15 @@ export const ProductosHome = () => {
       }
     };
 
+    dispatch(fetchCategorias());
+    dispatch(fetchProductos());
+
     document.addEventListener("click", handleClickOutside);
 
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     console.log("Category Refs:", categoryRefs.current);
@@ -103,9 +122,26 @@ export const ProductosHome = () => {
     }
   };
 
+  if (loading || loadingProductos) {
+    return <div>Cargando...</div>;
+  }
+
+  if (error || errorProductos) {
+    return (
+      <div>
+        Error al cargar datos:
+        {error && <div>{error}</div>}
+        {errorProductos && <div>{errorProductos}</div>}
+      </div>
+    );
+  }
+
   return (
     <div>
-      <Searchbar setSuggestions={handleSetSearchSuggestions} productos={productos} />
+      <Searchbar
+        setSuggestions={handleSetSearchSuggestions}
+        productos={productos}
+      />
       <SearchSuggestionsList
         suggestions={searchSuggestions}
         closeSuggestions={closeSuggestions}
@@ -118,9 +154,11 @@ export const ProductosHome = () => {
             <div>
               <div
                 className="border border-gray-300 rounded-md p-5 font-raleway justify-between flex items-center cursor-pointer"
-                onClick={() => handleCategoryClick(selectedCategory, activeCategoryIndex)}
+                onClick={() =>
+                  handleCategoryClick(selectedCategory, activeCategoryIndex)
+                }
               >
-                {selectedCategory}
+                {selectedCategory.nombre}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -135,7 +173,10 @@ export const ProductosHome = () => {
                   />
                 </svg>
               </div>
-              <div ref={suggestionsRef} className="max-h-96 overflow-y-auto border border-gray-300 rounded-md">
+              <div
+                ref={suggestionsRef}
+                className="max-h-96 overflow-y-auto border border-gray-300 rounded-md"
+              >
                 {categorySuggestions.length > 0 ? (
                   categorySuggestions.map((suggestion, i) => (
                     <div
@@ -143,19 +184,25 @@ export const ProductosHome = () => {
                       className="p-5 font-raleway cursor-pointer flex items-center"
                       onClick={() => addToCalculator(suggestion)}
                     >
-                      <img src={suggestion.imagen} alt={suggestion.nombre} className="w-10 h-10 mr-4" />{" "}
+                      <img
+                        src={suggestion.imagen}
+                        alt={suggestion.nombre}
+                        className="w-10 h-10 mr-4"
+                      />{" "}
                       {suggestion.nombre} - ${suggestion.precio}
                     </div>
                   ))
                 ) : (
-                  <div className="p-5 text-center">No hay productos para esta categoría</div>
+                  <div className="p-5 text-center">
+                    No hay productos para esta categoría
+                  </div>
                 )}
               </div>
             </div>
           )}
           {/* Renderiza el resto de las categorías */}
           {categorias
-            .filter((categoria) => categoria !== selectedCategory)
+            .filter((categoria) => selectedCategory ? categoria.id !== selectedCategory.id : true)
             .map((categoria, index) => (
               <div
                 key={index}
@@ -166,7 +213,7 @@ export const ProductosHome = () => {
                   className="border border-gray-300 rounded-md p-5 font-raleway justify-between flex items-center cursor-pointer"
                   onClick={() => handleCategoryClick(categoria, index)}
                 >
-                  {categoria}
+                  {categoria.nombre}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="20"
