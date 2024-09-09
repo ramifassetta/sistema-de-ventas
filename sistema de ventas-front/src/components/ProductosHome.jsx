@@ -21,11 +21,12 @@ export const ProductosHome = () => {
   const categorias = useSelector((state) => state.categories.categorias);
   const loading = useSelector((state) => state.categories.loading);
   const error = useSelector((state) => state.categories.error);
-  const productos = useSelector((state) => state.products);
+  const productos = useSelector((state) => state.products.productos);
   const loadingProductos = useSelector((state) => state.products.loading);
   const errorProductos = useSelector((state) => state.products.error);
 
   console.log(categorias);
+  console.log("Productos existentes:", productos);
 
   const closeSuggestions = () => {
     setSearchSuggestions([]);
@@ -58,7 +59,7 @@ export const ProductosHome = () => {
       setActiveCategoryIndex(index);
       const filteredSuggestions = productos.filter(
         (producto) =>
-          producto.categoria.toLowerCase() === category.nombre.toLowerCase()
+          producto.categoria_id.toLowerCase() === category.id.toLowerCase()
       );
       setCategorySuggestions(filteredSuggestions);
     }
