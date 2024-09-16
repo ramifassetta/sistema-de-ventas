@@ -29,6 +29,7 @@ export const Productos = () => {
   const loadingProductos = useSelector((state) => state.products.loading);
   const errorProductos = useSelector((state) => state.products.error);
 
+
   const closeSuggestions = () => {
     setCategorySuggestions([]);
     setSelectedCategory(null);
@@ -135,9 +136,7 @@ export const Productos = () => {
     setModalOpen(false);
   };
 
-  if (loading || loadingProductos) {
-    return <div>Cargando...</div>;
-  }
+ 
 
   if (error || errorProductos) {
     return (
@@ -223,7 +222,7 @@ export const Productos = () => {
             </div>
           )}
           {categorias
-            .filter((categoria) => categoria !== selectedCategory)
+            .filter((categoria) => selectedCategory ? categoria.id !== selectedCategory.id : true)
             .map((categoria, index) => (
               <div
                 key={index}
@@ -234,7 +233,7 @@ export const Productos = () => {
                   className="border border-gray-300 rounded-md p-5 font-raleway justify-between flex items-center cursor-pointer"
                   onClick={() => handleCategoryClick(categoria, index)}
                 >
-                  {categoria}
+                  {categoria.nombre}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="20"
