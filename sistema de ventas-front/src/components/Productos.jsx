@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { ScrollProductos } from "./ScrollProductos";
 import { EditarProductoModal } from "./Modals/EditarProductoModal";
-import productos from "../constants/productos";
-import categorias from "../data/categorias";
+// import productos from "../constants/productos";
+// import categorias from "../data/categorias";
 import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCategorias } from "../redux/slices/categoriaThunks";
+import { fetchProductos } from "../redux/slices/productoThunks";
 
 export const Productos = () => {
   const [categorySuggestions, setCategorySuggestions] = useState([]);
@@ -18,6 +21,13 @@ export const Productos = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const suggestionsRef = useRef(null);
   const categoryRefs = useRef([]);
+  const dispatch = useDispatch();
+  const categorias = useSelector((state) => state.categories.categorias);
+  const loading = useSelector((state) => state.categories.loading);
+  const error = useSelector((state) => state.categories.error);
+  const productos = useSelector((state) => state.products.productos);
+  const loadingProductos = useSelector((state) => state.products.loading);
+  const errorProductos = useSelector((state) => state.products.error);
 
   const closeSuggestions = () => {
     setCategorySuggestions([]);
@@ -33,7 +43,7 @@ export const Productos = () => {
       setActiveCategoryIndex(index);
       const filteredSuggestions = productos.filter(
         (producto) =>
-          producto.categoria.toLowerCase() === category.toLowerCase()
+          producto.categoria_id.toLowerCase() === category.id.toLowerCase()
       );
       setCategorySuggestions(filteredSuggestions);
     }
@@ -59,12 +69,15 @@ export const Productos = () => {
       }
     };
 
+    dispatch(fetchCategorias());
+    dispatch(fetchProductos());
+
     document.addEventListener("click", handleClickOutside);
 
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, []);
+  }, [dispatch]);
 
   const setCategoryRef = (index, el) => {
     if (el) {
@@ -122,6 +135,20 @@ export const Productos = () => {
     setModalOpen(false);
   };
 
+  if (loading || loadingProductos) {
+    return <div>Cargando...</div>;
+  }
+
+  if (error || errorProductos) {
+    return (
+      <div>
+        Error al cargar datos:
+        {error && <div>{error}</div>}
+        {errorProductos && <div>{errorProductos}</div>}
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="flex flex-row">
@@ -134,7 +161,7 @@ export const Productos = () => {
                   handleCategoryClick(selectedCategory, activeCategoryIndex)
                 }
               >
-                {selectedCategory}
+                {selectedCategory.nombre}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -228,7 +255,7 @@ export const Productos = () => {
         <ScrollProductos />
       </div>
 
-      <EditarProductoModal 
+      <EditarProductoModal
         handleFormChange={handleFormChange}
         handleModalClose={handleModalClose}
         handleFormSubmit={handleFormSubmit}

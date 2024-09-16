@@ -1,7 +1,9 @@
-import { useState } from "react";
-import productos from "../constants/productos";
+import { useEffect, useState } from "react";
+// import productos from "../constants/productos";
 import { AgregarProductoModal } from "./Modals/AgregarProductoModal";
 import { InfoProductoModal } from "./Modals/InfoProductoModal";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProductos } from "../redux/slices/productoThunks";
 
 export const ScrollProductos = () => {
   const [productName, setProductName] = useState("");
@@ -14,6 +16,10 @@ export const ScrollProductos = () => {
   const [addModal, setAddModal] = useState(false);
   const [infoModal, setInfoModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null); // Estado para almacenar el producto seleccionado
+  const productos = useSelector((state) => state.products.productos);
+  const loadingProductos = useSelector((state) => state.products.loading);
+  const errorProductos = useSelector((state) => state.products.error);
+  const dispatch = useDispatch();
 
   const handleChangeProductName = (e) => {
     const searchProduct = e.target.value.toLowerCase();
@@ -44,6 +50,23 @@ export const ScrollProductos = () => {
     setSelectedProduct(producto);
     setInfoModal(true);
   };
+
+  useEffect(() => {
+    dispatch(fetchProductos());
+  }, [dispatch]);
+
+  if (loadingProductos) {
+    return <div>Cargando...</div>;
+  }
+
+  if (errorProductos) {
+    return (
+      <div>
+        Error al cargar datos:
+        {errorProductos && <div>{errorProductos}</div>}
+      </div>
+    );
+  }
 
   return (
     <div className="w-1/3 border border-gray-300 mt-10 ml-28 rounded-md max-h-[600px] flex flex-col">
