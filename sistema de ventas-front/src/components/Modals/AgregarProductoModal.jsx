@@ -15,8 +15,6 @@ export const AgregarProductoModal = ({
   const loading = useSelector((state) => state.categories.loading);
   const error = useSelector((state) => state.categories.error);
 
-  console.log(categorias);
-
   useEffect(() => {
     dispatch(fetchCategorias());
   }, [dispatch]);

@@ -6,27 +6,27 @@ import { EditarProductoModal } from "./Modals/EditarProductoModal";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategorias } from "../redux/slices/categoriaThunks";
-import { fetchProductos } from "../redux/slices/productoThunks";
+import { fetchProductos, updateProducto } from "../redux/slices/productoThunks";
 
 export const Productos = () => {
   const [categorySuggestions, setCategorySuggestions] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [activeCategoryIndex, setActiveCategoryIndex] = useState(null);
   const [formData, setFormData] = useState({
-    name: "",
-    category: "",
-    price: "",
-    image: "",
+    nombre: "",
+    categoria_id: "",
+    precio: "",
+    imagen: "",
   });
   const [modalOpen, setModalOpen] = useState(false);
   const suggestionsRef = useRef(null);
   const categoryRefs = useRef([]);
   const dispatch = useDispatch();
   const categorias = useSelector((state) => state.categories.categorias);
-  const loading = useSelector((state) => state.categories.loading);
+  // const loading = useSelector((state) => state.categories.loading);
   const error = useSelector((state) => state.categories.error);
   const productos = useSelector((state) => state.products.productos);
-  const loadingProductos = useSelector((state) => state.products.loading);
+  // const loadingProductos = useSelector((state) => state.products.loading);
   const errorProductos = useSelector((state) => state.products.error);
 
 
@@ -72,6 +72,7 @@ export const Productos = () => {
 
     dispatch(fetchCategorias());
     dispatch(fetchProductos());
+    
 
     document.addEventListener("click", handleClickOutside);
 
@@ -107,11 +108,14 @@ export const Productos = () => {
     });
   };
   const handleEditClick = (suggestion) => {
+    console.log(suggestion);
+
     setFormData({
-      name: suggestion.nombre,
-      category: suggestion.categoria,
-      price: suggestion.precio,
-      image: suggestion.imagen,
+      id: suggestion.id,
+      nombre: suggestion.nombre,
+      categoria_id: suggestion.categoria_id,
+      precio: suggestion.precio,
+      imagen: suggestion.imagen,
     });
     setModalOpen(true);
   };
@@ -130,10 +134,15 @@ export const Productos = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    // Aquí podrías manejar la lógica para guardar los cambios (HACER LA LOGICA DEL SUBMIT PARA EDIT CUANDO TENGA EL BACK)
-
-    console.log("Form submitted", formData);
-    setModalOpen(false);
+    dispatch(updateProducto(formData))
+    .unwrap() // Desempaqueta la promesa para manejar el éxito/error de manera más limpia
+    .then(() => {
+      console.log("Producto editado con éxito");
+      setModalOpen(false);
+    })
+    .catch((error) => {
+      console.error("Error al editar el producto:", error);
+    });
   };
 
  
