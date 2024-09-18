@@ -1,13 +1,39 @@
 import PropTypes from "prop-types";
-import categorias from "../../data/categorias";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchCategorias } from "../../redux/slices/categoriaThunks";
 
 export const AgregarProductoModal = ({
   handleModalClose,
   handleFormChange,
   handleFormSubmit,
   formData,
-  addModal
+  addModal,
 }) => {
+  const dispatch = useDispatch();
+  const categorias = useSelector((state) => state.categories.categorias);
+  const loading = useSelector((state) => state.categories.loading);
+  const error = useSelector((state) => state.categories.error);
+
+  console.log(categorias);
+
+  useEffect(() => {
+    dispatch(fetchCategorias());
+  }, [dispatch]);
+
+  if (loading) {
+    return <div>Cargando...</div>;
+  }
+
+  if (error) {
+    return (
+      <div>
+        Error al cargar datos:
+        {error && <div>{error}</div>}
+      </div>
+    );
+  }
+
   if (!addModal) return null;
 
   return (
@@ -25,8 +51,8 @@ export const AgregarProductoModal = ({
             <input
               type="text"
               id="productName"
-              name="name"
-              value={formData.name}
+              name="nombre"
+              value={formData.nombre}
               onChange={handleFormChange}
               className="mt-1 p-2 w-full border border-gray-300 rounded-md"
             />
@@ -40,15 +66,15 @@ export const AgregarProductoModal = ({
             </label>
             <select
               id="productCategory"
-              name="category"
-              value={formData.category}
+              name="categoria_id"
+              value={formData.categoria_id}
               onChange={handleFormChange}
               className="mt-1 p-2 w-full border border-gray-300 rounded-md"
             >
               <option value="">Selecciona una categoría</option>
               {categorias.map((categoria) => (
-                <option key={categoria} value={categoria}>
-                  {categoria}
+                <option key={categoria.id} value={categoria.id}>
+                  {categoria.nombre}
                 </option>
               ))}
             </select>
@@ -63,8 +89,8 @@ export const AgregarProductoModal = ({
             <input
               type="number"
               id="productPrice"
-              name="price"
-              value={formData.price}
+              name="precio"
+              value={formData.precio}
               onChange={handleFormChange}
               step="0.01"
               className="mt-1 p-2 w-full border border-gray-300 rounded-md"
@@ -80,8 +106,8 @@ export const AgregarProductoModal = ({
             <input
               type="text"
               id="productImage"
-              name="image"
-              value={formData.image}
+              name="imagen"
+              value={formData.imagen}
               onChange={handleFormChange}
               className="mt-1 p-2 w-full border border-gray-300 rounded-md"
             />
@@ -112,10 +138,10 @@ AgregarProductoModal.propTypes = {
   handleFormChange: PropTypes.func.isRequired,
   handleFormSubmit: PropTypes.func.isRequired,
   formData: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    category: PropTypes.string.isRequired,
-    price: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
+    nombre: PropTypes.string.isRequired,
+    categoria_id: PropTypes.string.isRequired,
+    precio: PropTypes.number.isRequired,
+    imagen: PropTypes.string.isRequired,
   }).isRequired,
   addModal: PropTypes.bool.isRequired,
   setAddModal: PropTypes.func.isRequired,

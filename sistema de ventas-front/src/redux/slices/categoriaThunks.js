@@ -7,10 +7,9 @@ export const fetchCategorias = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const response = await axios.get('http://localhost:3000/api/categorias');
-            console.log('Response from backend:', response.data);
             return response.data;
         } catch (error) {
-            console.log('Error fetching categories:', error); // Agrega este log
+            console.log('Error fetching categories:', error); 
             return rejectWithValue(error.response.data);
         }
     }

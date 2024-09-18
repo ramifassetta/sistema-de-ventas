@@ -19,7 +19,7 @@ export const addProducto = createAsyncThunk(
   'productos/addProducto',
   async (nuevoProducto, { rejectWithValue }) => {
     try {
-      const response = await axios.post('/api/productos', nuevoProducto);
+      const response = await axios.post('http://localhost:3000/api/productos', nuevoProducto);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -32,7 +32,7 @@ export const updateProducto = createAsyncThunk(
   'productos/updateProducto',
   async (productoActualizado, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`/api/productos/${productoActualizado.id}`, productoActualizado);
+      const response = await axios.put(`http://localhost:3000/api/productos/${productoActualizado.id}`, productoActualizado);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -45,7 +45,7 @@ export const deleteProducto = createAsyncThunk(
   'productos/deleteProducto',
   async (productoId, { rejectWithValue }) => {
     try {
-      const response = await axios.delete(`/api/productos/${productoId}`);
+      const response = await axios.delete(`http://localhost:3000/api/productos/${productoId}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);

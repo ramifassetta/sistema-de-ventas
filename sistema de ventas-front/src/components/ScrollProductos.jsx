@@ -4,14 +4,15 @@ import { AgregarProductoModal } from "./Modals/AgregarProductoModal";
 import { InfoProductoModal } from "./Modals/InfoProductoModal";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductos } from "../redux/slices/productoThunks";
+import { addProducto } from "../redux/slices/productoThunks"; 
 
 export const ScrollProductos = () => {
   const [productName, setProductName] = useState("");
   const [formData, setFormData] = useState({
-    name: "",
-    category: "",
-    price: "",
-    image: "",
+    nombre: "",
+    categoria_id: "",
+    precio: 0,
+    imagen: "",
   });
   const [addModal, setAddModal] = useState(false);
   const [infoModal, setInfoModal] = useState(false);
@@ -40,10 +41,15 @@ export const ScrollProductos = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    // Aquí podrías manejar la lógica para agregar el producto (HACER LA LOGICA DEL SUBMIT PARA AGREGAR PRODUCTO CUANDO TENGA EL BACK)
-
-    console.log("Product added", formData);
-    setAddModal(false);
+    dispatch(addProducto(formData))
+    .unwrap() // Desempaqueta la promesa para manejar el éxito/error de manera más limpia
+    .then(() => {
+      console.log("Producto agregado con éxito");
+      setAddModal(false);
+    })
+    .catch((error) => {
+      console.error("Error al agregar el producto:", error);
+    });
   };
 
   const handleInfoClick = (producto) => {
