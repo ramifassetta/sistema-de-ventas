@@ -1,12 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { ScrollProductos } from "./ScrollProductos";
 import { EditarProductoModal } from "./Modals/EditarProductoModal";
-// import productos from "../constants/productos";
-// import categorias from "../data/categorias";
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategorias } from "../redux/slices/categoriaThunks";
-import { fetchProductos, updateProducto } from "../redux/slices/productoThunks";
+import { deleteProducto, fetchProductos, updateProducto } from "../redux/slices/productoThunks";
 
 export const Productos = () => {
   const [categorySuggestions, setCategorySuggestions] = useState([]);
@@ -15,7 +13,7 @@ export const Productos = () => {
   const [formData, setFormData] = useState({
     nombre: "",
     categoria_id: "",
-    precio: "",
+    precio: 0,
     imagen: "",
   });
   const [modalOpen, setModalOpen] = useState(false);
@@ -87,29 +85,30 @@ export const Productos = () => {
     }
   };
 
-  //Hacer la logica del Delete (no se si se hace aca en la alerta, despues veo)
-  const showDeleteAlert = () => {
+
+  const showDeleteAlert = (id) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "¿Estás seguro?",
+      text: "¡No podrás revertir esto!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Sí, eliminar",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success",
-        });
+        dispatch(deleteProducto(id))
+          .then(() => {
+            Swal.fire("Eliminado!", "El producto ha sido eliminado.", "success");
+          })
+          .catch(() => {
+            Swal.fire("Error!", "Hubo un problema al eliminar el producto.", "error");
+          });
       }
     });
   };
-  const handleEditClick = (suggestion) => {
-    console.log(suggestion);
 
+  const handleEditClick = (suggestion) => {
     setFormData({
       id: suggestion.id,
       nombre: suggestion.nombre,
@@ -135,7 +134,7 @@ export const Productos = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     dispatch(updateProducto(formData))
-    .unwrap() // Desempaqueta la promesa para manejar el éxito/error de manera más limpia
+    .unwrap()
     .then(() => {
       console.log("Producto editado con éxito");
       setModalOpen(false);
@@ -214,7 +213,7 @@ export const Productos = () => {
                           </button>
                           <button
                             className="px-2 py-1 bg-red-500 text-white rounded font-semibold"
-                            onClick={showDeleteAlert}
+                            onClick={() => showDeleteAlert(suggestion.id)}
                           >
                             BORRAR
                           </button>
