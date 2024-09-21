@@ -2,8 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { SumaProductos } from "./SumaProductos";
 import { Searchbar } from "./Searchbar";
 import { SearchSuggestionsList } from "./SearchSuggestionsList";
-// import categorias from "../data/categorias";
-// import productos from "../constants/productos";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCategorias } from "../redux/slices/categoriaThunks";
 import { fetchProductos } from "../redux/slices/productoThunks";
@@ -40,12 +38,12 @@ export const ProductosHome = () => {
       (p) => p.nombre === product.nombre
     );
     if (productIndex !== -1) {
-      // Producto ya está en la lista, aumentar la cantidad
+      
       const updatedProducts = [...selectedProducts];
       updatedProducts[productIndex].cantidad += 1;
       setSelectedProducts(updatedProducts);
     } else {
-      // Producto no está en la lista, agregarlo
+      
       setSelectedProducts([...selectedProducts, { ...product, cantidad: 1 }]);
     }
   };
@@ -138,19 +136,20 @@ export const ProductosHome = () => {
   }
 
   return (
-    <div>
-      <Searchbar
-        setSuggestions={handleSetSearchSuggestions}
-        productos={productos}
-      />
-      <SearchSuggestionsList
-        suggestions={searchSuggestions}
-        closeSuggestions={closeSuggestions}
-        addToCalculator={addToCalculator}
-      />
-      <div className="flex flex-row">
-        <div className="space-y-10 ml-20 w-2/4 mt-10">
-          {/* Renderiza la categoría seleccionada en primer lugar */}
+    <div className="w-full">
+      <div>
+        <Searchbar
+          setSuggestions={handleSetSearchSuggestions}
+          productos={productos}
+        />
+        <SearchSuggestionsList
+          suggestions={searchSuggestions}
+          closeSuggestions={closeSuggestions}
+          addToCalculator={addToCalculator}
+        />
+      </div>
+      <div className="flex flex-col md:flex-row">
+        <div className="space-y-2 w-full px-5 lg:space-y-10 md:mx-20 md:w-full lg:w-2/4 mt-10 m-auto">
           {selectedCategory && (
             <div>
               <div
@@ -201,7 +200,6 @@ export const ProductosHome = () => {
               </div>
             </div>
           )}
-          {/* Renderiza el resto de las categorías */}
           {categorias
             .filter((categoria) => selectedCategory ? categoria.id !== selectedCategory.id : true)
             .map((categoria, index) => (
@@ -211,7 +209,7 @@ export const ProductosHome = () => {
                 className={selectedCategory ? "hidden" : ""}
               >
                 <div
-                  className="border border-gray-300 rounded-md p-5 font-raleway justify-between flex items-center cursor-pointer"
+                  className="border border-gray-300 rounded-md p-5 font-raleway justify-between flex items-center cursor-pointer w-full "
                   onClick={() => handleCategoryClick(categoria, index)}
                 >
                   {categoria.nombre}

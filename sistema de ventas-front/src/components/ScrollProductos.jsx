@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-// import productos from "../constants/productos";
 import { AgregarProductoModal } from "./Modals/AgregarProductoModal";
 import { InfoProductoModal } from "./Modals/InfoProductoModal";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,7 +15,7 @@ export const ScrollProductos = () => {
   });
   const [addModal, setAddModal] = useState(false);
   const [infoModal, setInfoModal] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null); // Estado para almacenar el producto seleccionado
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const productos = useSelector((state) => state.products.productos);
   const loadingProductos = useSelector((state) => state.products.loading);
   const errorProductos = useSelector((state) => state.products.error);
@@ -42,7 +41,7 @@ export const ScrollProductos = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     dispatch(addProducto(formData))
-    .unwrap() // Desempaqueta la promesa para manejar el éxito/error de manera más limpia
+    .unwrap()
     .then(() => {
       console.log("Producto agregado con éxito");
       setAddModal(false);
@@ -75,17 +74,17 @@ export const ScrollProductos = () => {
   }
 
   return (
-    <div className="w-1/3 border border-gray-300 mt-10 ml-28 rounded-md max-h-[600px] flex flex-col">
-      <div className="flex mr-5">
+    <div className="w-full lg:w-1/3 border border-gray-300 mt-10  rounded-md max-h-[600px] flex flex-col m-auto mb-10 md:mr-5 lg:mr-10 xl:mr-20">
+      <div className="flex flex-col lg:flex-row mr-5 w-full px-4 lg:px-0 ">
         <input
           type="search"
-          className="rounded-2xl border-2 border-indigo-200 w-full mt-5 ml-5 mr-5 outline-none pl-3"
+          className="rounded-2xl border-2 border-indigo-200 w-full mt-5 outline-none pl-3 lg:ml-3"
           placeholder="Buscar Producto"
           value={productName}
           onChange={handleChangeProductName}
         />
         <button
-          className="mt-5 bg-green-400 text-white font-raleway font-semibold p-2 rounded-md ml-auto"
+          className="mt-5 lg:ml-4 bg-green-400 text-white font-raleway font-semibold p-2 rounded-md w-full lg:w-auto mr-3"
           onClick={() => setAddModal(true)}
         >
           Agregar Producto

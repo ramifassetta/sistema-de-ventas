@@ -158,8 +158,8 @@ export const Productos = () => {
 
   return (
     <div>
-      <div className="flex flex-row">
-        <div className="space-y-10 ml-20 w-2/4 mt-10">
+      <div className="flex flex-col md:flex-row">
+        <div className="space-y-2 w-full px-5 lg:space-y-10  md:w-full lg:w-2/4 mt-10 m-auto">
           {selectedCategory && (
             <div>
               <div
@@ -238,7 +238,7 @@ export const Productos = () => {
                 className={selectedCategory ? "hidden" : ""}
               >
                 <div
-                  className="border border-gray-300 rounded-md p-5 font-raleway justify-between flex items-center cursor-pointer"
+                  className="border border-gray-300 rounded-md p-5 font-raleway justify-between flex items-center cursor-pointer w-full"
                   onClick={() => handleCategoryClick(categoria, index)}
                 >
                   {categoria.nombre}
