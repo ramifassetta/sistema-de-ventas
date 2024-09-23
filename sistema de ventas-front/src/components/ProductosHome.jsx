@@ -149,7 +149,7 @@ export const ProductosHome = () => {
         />
       </div>
       <div className="flex flex-col md:flex-row">
-        <div className="space-y-2 w-full px-5 lg:space-y-10 md:mx-20 md:w-full lg:w-2/4 mt-10 m-auto">
+        <div className="space-y-2 w-full px-5 lg:space-y-10  md:w-full lg:w-2/4 mt-10 m-auto xl:mx-20">
           {selectedCategory && (
             <div>
               <div
